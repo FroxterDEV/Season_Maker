@@ -2,8 +2,11 @@ package com.weirdfox.seasonmaker;
 import javax.swing.*;
 import java.awt.*;
 
-public class Layout extends JPanel{
+public class Layout extends JPanel {
+        private Logic mainLogic = new Logic();
+        private String path = "";
     public Layout() {
+
         //Layout settings
         BoxLayout bl = new BoxLayout(this, BoxLayout.Y_AXIS);
 
@@ -40,9 +43,11 @@ public class Layout extends JPanel{
         JButton btnFolderChoose = new JButton("Choose");
         JTextField txtFolderChoose = new JTextField(15);
         txtFolderChoose.setEditable(false);
+        txtFolderChoose.setText("Please choose a folder...");
 
         //Make folders button
         JButton btnMakeFolders = new JButton("Make!");
+        btnMakeFolders.setEnabled(false);
 
         //Adding in layouts
         prefixLayout.add(lblPrefix);
@@ -69,5 +74,13 @@ public class Layout extends JPanel{
         add(locationLayout);
         add(makeLayout);
 
+        //Adding actions to buttons
+        btnFolderChoose.addActionListener(e -> {
+            path = mainLogic.chooseFolder(fcLocation, this, btnMakeFolders, txtFolderChoose);
+        });
+        btnMakeFolders.addActionListener(e-> {
+            mainLogic.createFolders(path, txtPrefix, spnTotalSeasons, chkIncSeason0, this);
+        });
     }
+
 }
